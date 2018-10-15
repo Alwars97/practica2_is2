@@ -1,0 +1,9 @@
+
+*.properties
+*.xml
+Practica_1_IS2/build/classes/.netbeans_update_resources
+Practica_1_IS2/build/classes/.netbeans_automatic_build
+*.class
+Practica_1_IS2/dist/README.TXT
+Practica_1_IS2/manifest.mf
+Practica_1_IS2/dist/Practica_1_IS2.jar
