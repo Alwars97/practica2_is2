@@ -68,9 +68,9 @@ public class Usuario {
     public String toString(){
         String u = "";
         
-        u = "\nPROPIETARIO " + idCliente + "\n";
-        u += "Nombre del propietario: " + nombre + "\n";
-        u += "Correo Electrónico: " + email + "\n";
+        u = "\n\rPROPIETARIO " + idCliente + "\n\r";
+        u += "Nombre del propietario: " + nombre + "\n\r";
+        u += "Correo Electrónico: " + email + "\n\r";
         
         return u;
     }

@@ -92,10 +92,10 @@ public class Prestamo {
     public String toString() {
         String p = "";
 
-        p = "\t\tNombre del cliente: " + nomUsu + "\n";
-        p += "\t\tFechas del prestamo: " + fechaIni + " - " + fechaFin + "\n";
-        p += "\t\tImporte para el propietario: " + importe + " euros\n";
-        p += "\t\tImporte para la startup: " + startUp + " euros\n";
+        p = "\t\tNombre del cliente: " + nomUsu + "\n\r";
+        p += "\t\tFechas del prestamo: " + fechaIni + " - " + fechaFin + "\n\r";
+        p += "\t\tImporte para el propietario: " + importe + " euros\n\r";
+        p += "\t\tImporte para la startup: " + startUp + " euros\n\r";
 
         return p;
     }

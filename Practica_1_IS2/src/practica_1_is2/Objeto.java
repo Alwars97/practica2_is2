@@ -92,10 +92,10 @@ public class Objeto {
     public String toString(){
         String o = "";
         
-        o = "\tCódigo del objeto: " + idObjeto + "\n";
-        o += "\tDescripción: " + descripcion + "\n";
-        o += "\tFecha de disponibilidad: " + fechaIni + " - " + fechaFin + "\n";
-        o += "\tCoste del prestamo por día: " + precio + " euros\n";
+        o = "\tCódigo del objeto: " + idObjeto + "\n\r";
+        o += "\tDescripción: " + descripcion + "\n\r";
+        o += "\tFecha de disponibilidad: " + fechaIni + " - " + fechaFin + "\n\r";
+        o += "\tCoste del prestamo por día: " + precio + " euros\n\r";
         
         return o;
     }

@@ -1,5 +1,6 @@
 package practica_1_is2;
 
+import java.io.FileWriter;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -143,17 +144,18 @@ public class Practica_1_IS2 {
         System.out.println("Bienvenido a la mayor empresa de alquiler de España\n'En tiempos de crisis, saque el máximo rendimiento a sus pertenencias'\n\nPor favor selecciona una de las acciones para comenzar: ");
 
         // MENÚ
-        while (opcion != 8) {
+        while (opcion != 9) {
 
-            System.out.println("\nMENÚ PRINCIPAL");
-            System.out.println("\nCrear Usuario .......... 1");
-            System.out.println("Alta Objeto ............ 2");
-            System.out.println("Alquiler de Objeto ..... 3");
-            System.out.println("Listar Objetos ......... 4");
-            System.out.println("Baja de Objeto ......... 5");
-            System.out.println("Mostrar Saldo .......... 6");
-            System.out.println("Modificar alquiler...... 7");
-            System.out.println("Salir .................. 8");
+            System.out.println("\nMENÚ PRINCIPAL 2.0");
+            System.out.println("\nCrear Usuario ............. 1");
+            System.out.println("Alta Objeto ............... 2");
+            System.out.println("Alquiler de Objeto ........ 3");
+            System.out.println("Listar Objetos ............ 4");
+            System.out.println("Baja de Objeto ............ 5");
+            System.out.println("Mostrar Saldo ............. 6");
+            System.out.println("Modificar alquiler......... 7");
+            System.out.println("Generar recibo (.txt)...... 8");
+            System.out.println("Salir ..................... 9");
 
             System.out.print("\nOpcion: ");
             opcion = Integer.parseInt(teclado.nextLine());
@@ -374,11 +376,9 @@ public class Practica_1_IS2 {
                                 }
                             }
                         }
-                        
+
                         idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
                         Collections.sort(idClientes); //Ordeno el arraylist
-                        
-                        System.out.println(idClientes.toString());
 
                         for (int i = 0; i < idClientes.size(); i++) {
                             System.out.println(usuarios.get(idClientes.get(i) - 1).toString());
@@ -392,7 +392,7 @@ public class Practica_1_IS2 {
                                     System.out.println("\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n");
                                 } else {
                                     for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
-                                        System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k));
+                                        System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString());
 
                                         cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
                                     }
@@ -400,9 +400,9 @@ public class Practica_1_IS2 {
                             }
 
                             System.out.println("El importe total para la startUp es de " + cont + " euros\n");
-                            cont = 0;       
+                            cont = 0;
                         }
-                        
+
                         idClientes.clear();
                     }
                 }
@@ -413,7 +413,7 @@ public class Practica_1_IS2 {
 
                         System.out.println("\nNo existen usuarios registrados en el sistema, por favor introduce la opcion 1. \n");
 
-                    }else {
+                    } else {
 
                         System.out.print("\nPor favor introduce tu codigo de usuario: \n");
 
@@ -423,7 +423,7 @@ public class Practica_1_IS2 {
 
                         System.out.print("Codigo: ");
                         cod = Integer.parseInt(teclado.nextLine());
-                        
+
                         if (objetos.isEmpty()) {
                             System.out.println("\nNo hay objetos para alquilar. ");
                         } else {
@@ -434,24 +434,81 @@ public class Practica_1_IS2 {
                                 }
                             }
                         }
-                        
-                        if(flag){
-                            
+
+                        if (flag) {
+
                             System.out.print("Codigo del objeto a modificar su precio de alquiler: ");
                             codProd = Integer.parseInt(teclado.nextLine());
-                            
+
                             System.out.print("Introduce un nuevo precio de alquiler por día: ");
                             nalquiler = Double.parseDouble(teclado.nextLine());
-                            
+
                             objetos.get(codProd - 1).setPrecio(nalquiler);
-                            
-                            System.out.println("\nPRECIO DE ALQUILER DEL OBJETO " + objetos.get(codProd - 1).getDescripcion() + " MODIFICADO CORRECTAMENTE. \n");
+
+                            System.out.println("\nPRECIO DE ALQUILER DEL OBJETO '" + objetos.get(codProd - 1).getDescripcion() + "' MODIFICADO CORRECTAMENTE. \n");
                         }
                     }
                 }
                 break;
 
-                case 8: {
+                case 8: { // GENERAR UN ARCHIVO TXT CON LA INFORMACION MOSTRADA EN LA OPCION 6 - MODIFICACION 2 PRACTICA 2
+                    
+                    String recibo = "";
+                    
+                    if (usuarios.isEmpty()) {
+                        System.out.println("\nNo existen usuarios registrados en el sistema, por favor introduce la opcion 1. \n");
+                    } else {
+
+                        for (int i = 0; i < usuarios.size(); i++) {
+                            for (int j = 0; j < usuarios.get(i).getObjetos_prestados().size(); j++) {
+                                for (int k = 0; k < usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                    idClientes.add(usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().get(k).getIdClienteD());
+                                }
+                            }
+                        }
+
+                        idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
+                        Collections.sort(idClientes); //Ordeno el arraylist
+
+                        for (int i = 0; i < idClientes.size(); i++) {
+                            recibo += usuarios.get(idClientes.get(i) - 1).toString();
+
+                            for (int j = 0; j < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().size(); j++) {
+                                recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).toString();
+
+                                recibo += "\t\tPRÉSTAMOS DEL OBJETO " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + "\n\r";
+
+                                if (usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().isEmpty()) {
+                                    recibo += "\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n\r";
+                                } else {
+                                    for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                        recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString();
+
+                                        cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
+                                    }
+                                }
+                            }
+
+                            recibo += "\rEl importe total para la startUp es de " + cont + " euros\n\r";
+                            cont = 0;
+                        }
+
+                        idClientes.clear();
+                        
+                        try{
+                            FileWriter fichero = new FileWriter("saldo.txt");
+                            fichero.write(recibo);
+                            fichero.close();
+                            
+                            System.out.println("\nRECIBO GENERADO CORRECTAMENTE\n");
+                        }catch(Exception e){
+                            System.out.println("\nError desconocido. \n");
+                        }
+                    } 
+                }
+                break;
+
+                case 9: {
                     System.out.println("MUCHAS GRACIAS POR USAR NUESTROS SERVICIOS, HASTA PRONTO!");
                 }
                 break;

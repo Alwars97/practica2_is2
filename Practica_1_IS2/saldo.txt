@@ -1,0 +1,35 @@
+
+PROPIETARIO 1
+Nombre del propietario: Cliente 1
+Correo Electrónico: cliente1@correo.com
+	Código del objeto: 1
+	Descripción: Mesa de campo
+	Fecha de disponibilidad: 01/01/2018 - 01/01/2020
+	Coste del prestamo por día: 10.0 euros
+		PRÉSTAMOS DEL OBJETO 1
+		Nombre del cliente: Cliente 2
+		Fechas del prestamo: 01/07/2018 - 05/07/2018
+		Importe para el propietario: 40.0 euros
+		Importe para la startup: 4.0 euros
+	Código del objeto: 3
+	Descripción: Consola semi-nueva
+	Fecha de disponibilidad: 12/12/2018 - 12/12/2019
+	Coste del prestamo por día: 15.0 euros
+		PRÉSTAMOS DEL OBJETO 3
+		El objeto 3 no tiene prestamos asociados. 
+El importe total para la startUp es de 4.0 euros
+
+PROPIETARIO 2
+Nombre del propietario: Cliente 2
+Correo Electrónico: cliente2@correo.com
+	Código del objeto: 2
+	Descripción: Silla normal
+	Fecha de disponibilidad: 01/01/2018 - 01/01/2023
+	Coste del prestamo por día: 2.0 euros
+		PRÉSTAMOS DEL OBJETO 2
+		Nombre del cliente: Cliente 1
+		Fechas del prestamo: 01/03/2019 - 01/06/2020
+		Importe para el propietario: 914.0 euros
+		Importe para la startup: 91.4 euros
+El importe total para la startUp es de 91.4 euros
+
