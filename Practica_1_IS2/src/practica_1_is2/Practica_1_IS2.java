@@ -4,22 +4,25 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  *
- * @author Álvaro Temporal Palomares
- * Ingeniería del Software II
+ * @author Álvaro Temporal Palomares 
+ * Ingeniería del Software II 
  * 3º Ingeniería Informática - ETSE-UV
  */
 public class Practica_1_IS2 {
-    
-    
+
     /**
-     * Funcion que verifica que un correo electronico este bien formado mediante una expresion regular
+     * Funcion que verifica que un correo electronico este bien formado mediante
+     * una expresion regular
+     *
      * @param e Correo Electronico
      * @return True si esta bien formado, False si esta mal formado
      */
@@ -35,6 +38,7 @@ public class Practica_1_IS2 {
 
     /**
      * Funcion que verifica que una fecha este bien formada
+     *
      * @param fecha Fecha a verificar
      * @return True si esta bien formada, False si esta mal formada
      */
@@ -53,6 +57,7 @@ public class Practica_1_IS2 {
 
     /**
      * Funcion que compara 2 fechas
+     *
      * @param f1 Fecha a comparar
      * @param f2 Fecha a comparar
      * @return True si f1 es < a f2, False si f1 es > a f2
@@ -73,11 +78,13 @@ public class Practica_1_IS2 {
 
     /**
      * Funcion para comparar rango entre fechas
+     *
      * @param f1 Fecha original
      * @param f2 Fecha original
      * @param f3 Fecha introducida
      * @param f4 Fecha introducida
-     * @return True si las fechas introducidas estan en el rango de las originales, False si se pasan
+     * @return True si las fechas introducidas estan en el rango de las
+     * originales, False si se pasan
      */
     private static boolean comprobarRango(String f1, String f2, String f3, String f4) {
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -98,6 +105,7 @@ public class Practica_1_IS2 {
 
     /**
      * Funcion para calcular la diferencia entre 2 fechas en días
+     *
      * @param f1 Fecha inicio
      * @param f2 Fecha final
      * @return La diferencia en dias
@@ -112,7 +120,7 @@ public class Practica_1_IS2 {
     }
 
     /**
-     * 
+     *
      * PROGRAMA PRINCIPAL DESDE DONDE SE EJECUTA EL MENÚ
      */
     public static void main(String[] args) {
@@ -120,10 +128,10 @@ public class Practica_1_IS2 {
         // VARIABLES USADAS PARA RECOGER DATOS DE TECLADO
         int opcion = -1;
         String nombre, email, desc, fecIni, fecFin;
-        double precio, importe, cont = 0;
+        double precio, importe, cont = 0, nalquiler;
         int cod, codProd;
         boolean flag = false;
-        
+
         // ARRAYS DINAMICOS PARA ALMACENAR INFORMACION DE USUARIOS, OBJETOS, ECT
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<Objeto> objetos = new ArrayList<Objeto>();
@@ -135,7 +143,7 @@ public class Practica_1_IS2 {
         System.out.println("Bienvenido a la mayor empresa de alquiler de España\n'En tiempos de crisis, saque el máximo rendimiento a sus pertenencias'\n\nPor favor selecciona una de las acciones para comenzar: ");
 
         // MENÚ
-        while (opcion != 7) {
+        while (opcion != 8) {
 
             System.out.println("\nMENÚ PRINCIPAL");
             System.out.println("\nCrear Usuario .......... 1");
@@ -144,7 +152,8 @@ public class Practica_1_IS2 {
             System.out.println("Listar Objetos ......... 4");
             System.out.println("Baja de Objeto ......... 5");
             System.out.println("Mostrar Saldo .......... 6");
-            System.out.println("Salir .................. 7");
+            System.out.println("Modificar alquiler...... 7");
+            System.out.println("Salir .................. 8");
 
             System.out.print("\nOpcion: ");
             opcion = Integer.parseInt(teclado.nextLine());
@@ -270,7 +279,7 @@ public class Practica_1_IS2 {
                             flag = false;
 
                             System.out.println("\nALQUILER REALIZADO CORRECTAMENTE\n");
-                        }else{
+                        } else {
                             System.out.println("\nNo hay objetos para alquilar. ");
                         }
 
@@ -362,10 +371,14 @@ public class Practica_1_IS2 {
                             for (int j = 0; j < usuarios.get(i).getObjetos_prestados().size(); j++) {
                                 for (int k = 0; k < usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
                                     idClientes.add(usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().get(k).getIdClienteD());
-                                    System.out.println(idClientes);
                                 }
                             }
                         }
+                        
+                        idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
+                        Collections.sort(idClientes); //Ordeno el arraylist
+                        
+                        System.out.println(idClientes.toString());
 
                         for (int i = 0; i < idClientes.size(); i++) {
                             System.out.println(usuarios.get(idClientes.get(i) - 1).toString());
@@ -380,25 +393,70 @@ public class Practica_1_IS2 {
                                 } else {
                                     for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
                                         System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k));
-                                        
+
                                         cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
                                     }
                                 }
                             }
-                            
+
                             System.out.println("El importe total para la startUp es de " + cont + " euros\n");
-                            cont = 0;
+                            cont = 0;       
+                        }
+                        
+                        idClientes.clear();
+                    }
+                }
+                break;
+
+                case 7: {                 // MODIFICAR EL PRECIO DEL ALQUILER - MODIFICACIÓN 1 PRÁCTICA 2
+                    if (usuarios.isEmpty()) {
+
+                        System.out.println("\nNo existen usuarios registrados en el sistema, por favor introduce la opcion 1. \n");
+
+                    }else {
+
+                        System.out.print("\nPor favor introduce tu codigo de usuario: \n");
+
+                        for (int i = 0; i < usuarios.size(); i++) {
+                            System.out.println(usuarios.get(i).toString());
+                        }
+
+                        System.out.print("Codigo: ");
+                        cod = Integer.parseInt(teclado.nextLine());
+                        
+                        if (objetos.isEmpty()) {
+                            System.out.println("\nNo hay objetos para alquilar. ");
+                        } else {
+                            for (int i = 0; i < objetos.size(); i++) {
+                                if (objetos.get(i).getIdCliente() == cod) {
+                                    System.out.println(objetos.get(i).toString());
+                                    flag = true;
+                                }
+                            }
+                        }
+                        
+                        if(flag){
+                            
+                            System.out.print("Codigo del objeto a modificar su precio de alquiler: ");
+                            codProd = Integer.parseInt(teclado.nextLine());
+                            
+                            System.out.print("Introduce un nuevo precio de alquiler por día: ");
+                            nalquiler = Double.parseDouble(teclado.nextLine());
+                            
+                            objetos.get(codProd - 1).setPrecio(nalquiler);
+                            
+                            System.out.println("\nPRECIO DE ALQUILER DEL OBJETO " + objetos.get(codProd - 1).getDescripcion() + " MODIFICADO CORRECTAMENTE. \n");
                         }
                     }
                 }
                 break;
-                
-                case 7:{
+
+                case 8: {
                     System.out.println("MUCHAS GRACIAS POR USAR NUESTROS SERVICIOS, HASTA PRONTO!");
                 }
                 break;
-                
-                default:{
+
+                default: {
                     System.out.println("OPCIÓN NO RECONOCIDA. \n");
                 }
                 break;
