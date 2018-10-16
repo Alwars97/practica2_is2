@@ -144,7 +144,7 @@ public class Practica_1_IS2 {
         System.out.println("Bienvenido a la mayor empresa de alquiler de España\n'En tiempos de crisis, saque el máximo rendimiento a sus pertenencias'\n\nPor favor selecciona una de las acciones para comenzar: ");
 
         // MENÚ
-        while (opcion != 9) {
+        while (opcion != 0) {
 
             System.out.println("\nMENÚ PRINCIPAL 2.0");
             System.out.println("\nCrear Usuario ............. 1");
@@ -155,7 +155,8 @@ public class Practica_1_IS2 {
             System.out.println("Mostrar Saldo ............. 6");
             System.out.println("Modificar alquiler......... 7");
             System.out.println("Generar recibo (.txt)...... 8");
-            System.out.println("Salir ..................... 9");
+            System.out.println("Eliminar Usuario .......... 9");
+            System.out.println("Salir ..................... 0");
 
             System.out.print("\nOpcion: ");
             opcion = Integer.parseInt(teclado.nextLine());
@@ -281,8 +282,6 @@ public class Practica_1_IS2 {
                             flag = false;
 
                             System.out.println("\nALQUILER REALIZADO CORRECTAMENTE\n");
-                        } else {
-                            System.out.println("\nNo hay objetos para alquilar. ");
                         }
 
                     }
@@ -376,34 +375,39 @@ public class Practica_1_IS2 {
                                 }
                             }
                         }
+                        
+                        if(idClientes.isEmpty()){
+                            System.out.println("\nNo existen prestamos. No existen ingresos para la StartUp. \n");
+                        }else{
+                            idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
+                            Collections.sort(idClientes); //Ordeno el arraylist
 
-                        idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
-                        Collections.sort(idClientes); //Ordeno el arraylist
+                            for (int i = 0; i < idClientes.size(); i++) {
+                                System.out.println(usuarios.get(idClientes.get(i) - 1).toString());
 
-                        for (int i = 0; i < idClientes.size(); i++) {
-                            System.out.println(usuarios.get(idClientes.get(i) - 1).toString());
+                                for (int j = 0; j < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().size(); j++) {
+                                    System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).toString());
 
-                            for (int j = 0; j < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().size(); j++) {
-                                System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).toString());
+                                    System.out.println("\t\tPRÉSTAMOS DEL OBJETO " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + "\n");
 
-                                System.out.println("\t\tPRÉSTAMOS DEL OBJETO " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + "\n");
+                                    if (usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().isEmpty()) {
+                                        System.out.println("\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n");
+                                    } else {
+                                        for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                            System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString());
 
-                                if (usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().isEmpty()) {
-                                    System.out.println("\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n");
-                                } else {
-                                    for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
-                                        System.out.println(usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString());
-
-                                        cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
+                                            cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
+                                        }
                                     }
                                 }
+
+                                System.out.println("El importe total para la startUp es de " + cont + " euros\n");
+                                cont = 0;
                             }
 
-                            System.out.println("El importe total para la startUp es de " + cont + " euros\n");
-                            cont = 0;
+                            idClientes.clear();
                         }
-
-                        idClientes.clear();
+ 
                     }
                 }
                 break;
@@ -467,48 +471,91 @@ public class Practica_1_IS2 {
                             }
                         }
 
-                        idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
-                        Collections.sort(idClientes); //Ordeno el arraylist
+                        if(idClientes.isEmpty()){
+                            System.out.println("\nNo existen prestamos. No existen ingresos para la StartUp. \n");
+                        }else{
+                            idClientes = new ArrayList<Integer>(new HashSet<Integer>(idClientes)); //Elimino los duplicados
+                            Collections.sort(idClientes); //Ordeno el arraylist
 
-                        for (int i = 0; i < idClientes.size(); i++) {
-                            recibo += usuarios.get(idClientes.get(i) - 1).toString();
+                            for (int i = 0; i < idClientes.size(); i++) {
+                                recibo += usuarios.get(idClientes.get(i) - 1).toString();
 
-                            for (int j = 0; j < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().size(); j++) {
-                                recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).toString();
+                                for (int j = 0; j < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().size(); j++) {
+                                    recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).toString();
 
-                                recibo += "\t\tPRÉSTAMOS DEL OBJETO " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + "\n\r";
+                                    recibo += "\t\tPRÉSTAMOS DEL OBJETO " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + "\n\r";
 
-                                if (usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().isEmpty()) {
-                                    recibo += "\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n\r";
-                                } else {
-                                    for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
-                                        recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString();
+                                    if (usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().isEmpty()) {
+                                        recibo += "\t\tEl objeto " + usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getIdObjeto() + " no tiene prestamos asociados. \n\r";
+                                    } else {
+                                        for (int k = 0; k < usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                            recibo += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).toString();
 
-                                        cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
+                                            cont += usuarios.get(idClientes.get(i) - 1).getObjetos_prestados().get(j).getPrestamos().get(k).getStartUp();
+                                        }
                                     }
                                 }
+
+                                recibo += "\rEl importe total para la startUp es de " + cont + " euros\n\r";
+                                cont = 0;
                             }
 
-                            recibo += "\rEl importe total para la startUp es de " + cont + " euros\n\r";
-                            cont = 0;
-                        }
+                            idClientes.clear();
 
-                        idClientes.clear();
-                        
-                        try{
-                            FileWriter fichero = new FileWriter("saldo.txt");
-                            fichero.write(recibo);
-                            fichero.close();
-                            
-                            System.out.println("\nRECIBO GENERADO CORRECTAMENTE\n");
-                        }catch(Exception e){
-                            System.out.println("\nError desconocido. \n");
-                        }
+                            try{
+                                FileWriter fichero = new FileWriter("saldo.txt");
+                                fichero.write(recibo);
+                                fichero.close();
+
+                                System.out.println("\nRECIBO GENERADO CORRECTAMENTE\n");
+                            }catch(Exception e){
+                                System.out.println("\nError desconocido. \n");
+                            }
+                        }  
                     } 
                 }
                 break;
+                
+                case 9:{            // ELIMINAR USUARIO - MODIFICACION 3 PRACTICA 2
+                    if (usuarios.isEmpty()) {
+                        System.out.println("\nNo existen usuarios registrados en el sistema, por favor introduce la opcion 1. \n");
+                    } else {
+                    
+                        System.out.print("\nPor favor introduce el codigo de usuario a dar de baja: \n");
 
-                case 9: {
+                        for (int i = 0; i < usuarios.size(); i++) {
+                            System.out.println(usuarios.get(i).toString());
+                        }
+
+                        System.out.print("Codigo: ");
+                        cod = Integer.parseInt(teclado.nextLine());
+                        
+                        //Elimino sus objetos
+                        for(int i = 0; i < objetos.size(); i++){
+                            if(objetos.get(i).getIdCliente() == cod){
+                                objetos.remove(i);
+                            }
+                        }
+                        
+                        //Elimino los prestamos a su nombre
+                        for (int i = 0; i < usuarios.size(); i++) {
+                            for (int j = 0; j < usuarios.get(i).getObjetos_prestados().size(); j++) {
+                                for (int k = 0; k < usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                    if(usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().get(k).getIdCliente() == cod){
+                                        usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().remove(k);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        usuarios.remove(cod - 1); //Elimino al usuario
+                        
+                        System.out.println("\nUSUARIO DADO DE BAJA CORRECTAMENTE. \n");
+                    }
+                }
+                break;
+
+                case 0: {
                     System.out.println("MUCHAS GRACIAS POR USAR NUESTROS SERVICIOS, HASTA PRONTO!");
                 }
                 break;
