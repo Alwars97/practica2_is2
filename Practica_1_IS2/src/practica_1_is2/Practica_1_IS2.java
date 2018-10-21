@@ -6,8 +6,11 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,8 +131,8 @@ public class Practica_1_IS2 {
 
         // VARIABLES USADAS PARA RECOGER DATOS DE TECLADO
         int opcion = -1;
-        String nombre, email, desc, fecIni, fecFin;
-        double precio, importe, cont = 0, nalquiler;
+        String nombre, email, desc, fecIni, fecFin, direccion, poblacion, provincia;
+        double precio, importe, cont = 0, nalquiler, sum = 0;
         int cod, codProd;
         boolean flag = false;
 
@@ -137,6 +140,10 @@ public class Practica_1_IS2 {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<Objeto> objetos = new ArrayList<Objeto>();
         ArrayList<Integer> idClientes = new ArrayList<Integer>();
+       
+        ArrayList<Integer> id = new ArrayList<Integer>();
+        ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
+        ArrayList<Asiduo> a = new ArrayList<Asiduo>();
 
         Scanner teclado = new Scanner(System.in);
 
@@ -156,6 +163,7 @@ public class Practica_1_IS2 {
             System.out.println("Modificar alquiler......... 7");
             System.out.println("Generar recibo (.txt)...... 8");
             System.out.println("Eliminar Usuario .......... 9");
+            System.out.println("Listar mas asiduos ........ 10");
             System.out.println("Salir ..................... 0");
 
             System.out.print("\nOpcion: ");
@@ -167,13 +175,19 @@ public class Practica_1_IS2 {
                     nombre = teclado.nextLine();
                     System.out.print("Por favor introduce tu correo electronico: ");
                     email = teclado.nextLine();
+                    System.out.print("Por favor introduce tu direccion: ");
+                    direccion = teclado.nextLine();
+                    System.out.print("Poblacion: ");
+                    poblacion = teclado.nextLine();
+                    System.out.print("Provincia: ");
+                    provincia = teclado.nextLine();
 
                     while (comprobarEmail(email) == false) {
                         System.out.print("Correo electronico incorrecto, por favor introduce un correo válido: ");
                         email = teclado.nextLine();
                     }
 
-                    Usuario u = new Usuario(nombre, email);
+                    Usuario u = new Usuario(nombre, email, direccion, poblacion, provincia);
                     usuarios.add(u);
 
                     System.out.println("\nUSUARIO CREADO CORRECTAMENTE\n");
@@ -554,7 +568,53 @@ public class Practica_1_IS2 {
                     }
                 }
                 break;
+                
+                case 10:{       //ASIDUOS - MODIFICACION 4 PRACTICA 2
+                    
+                    if (usuarios.isEmpty()) {
+                        System.out.println("\nNo existen usuarios registrados en el sistema, por favor introduce la opcion 1. \n");
+                    } else {
+                        
+                        for(int i = 0; i < usuarios.size(); i++){
+                            for (int j = 0; j < usuarios.get(i).getObjetos_prestados().size(); j++) {
+                                for (int k = 0; k < usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().size(); k++) {
+                                   prestamos.add(usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().get(k));
+                                   id.add(usuarios.get(i).getObjetos_prestados().get(j).getPrestamos().get(k).getIdCliente());
+                                }
+                            }
+                        }
+                        
+                        id = new ArrayList<Integer>(new HashSet<Integer>(id)); //Elimino los duplicados
 
+                        for(int i = 0; i < id.size(); i++){
+                            for(int j = 0; j < prestamos.size(); j++){
+                                if(id.get(i) == prestamos.get(j).getIdCliente()){
+                                    sum += prestamos.get(j).getImporte();
+                                }
+                            }
+                            
+                            Asiduo as = new Asiduo(id.get(i), sum);
+                            a.add(as);
+                            sum = 0;
+                        }
+                        
+                        Collections.sort(a, (Asiduo o1, Asiduo o2) -> new Double(o2.getImporte()).compareTo(new Double(o1.getImporte())));
+                        
+                        System.out.println("\nLos usuarios mas asiduos que se llevan un regalo son: ");
+                        for(int i = 0; i < a.size(); i++){
+                            System.out.println("\n" + usuarios.get(a.get(i).getId() - 1));
+                            System.out.println("Con un importe total en objetos alquilados de: " + a.get(i).getImporte() + " euros. ");
+                        }
+                        
+                        prestamos.clear();
+                        id.clear();
+                        a.clear();
+
+                    }
+                        
+                }
+                break;
+                
                 case 0: {
                     System.out.println("MUCHAS GRACIAS POR USAR NUESTROS SERVICIOS, HASTA PRONTO!");
                 }
